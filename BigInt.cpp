@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void complement(BigInt& a) {
+void BigInt::complement(BigInt& a) {
     // set placeholder node to tail
     DigitNode *current = tail;
 
