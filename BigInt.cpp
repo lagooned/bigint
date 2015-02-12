@@ -14,13 +14,13 @@ void BigInt::complement(BigInt& a) {
     // for the length of the number
     for(int i = 0; i < length; i++) {
         // do math and convert to ascii char equivalents
-        int digit = current.digit - '0';
+        int digit = current->digit - '0';
         char newDigit = ((9-digit+carry) % 10) + '0';
         carry = newDigit/10;
-        current.digit = newDigit;
+        current->digit = newDigit;
 
         // iterate placeholder backwards
-        current = current.previous;
+        current = current->previous;
     }
 }
 
