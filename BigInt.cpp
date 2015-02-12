@@ -4,6 +4,22 @@
 
 using namespace std;
 
+void complement(BigInt& a) {
+    // set placeholder node to tail
+    // carry = 1
+    // FOR the length of the number
+        // convert chars to int via ascii offset (subtract '0')
+        // newDigit = (9-digit+carry)%10
+        // set carry to newDigit/10
+        // convert newDigit to ascii (add '0') and set digit in placeholder
+        // iterate placeholder backwards
+    // end FOR
+}
+
+void BigInt::push_front(char a) { }
+
+void BigInt::push_back(char a) { }
+
 BigInt::BigInt() {
     head = NULL;
     tail = NULL;
@@ -43,7 +59,7 @@ BigInt operator+(BigInt a, BigInt b) {
     // create placeholder variable for answer
 
     // set carry to 0
-    // set tail nodes to two pointers for iteration
+    // set two pointers to tails for iteration
 
     // FOR length of answer max(a.length, b.length) + 1
         // convert chars to int via ascii offset (subtract '0')
@@ -54,6 +70,10 @@ BigInt operator+(BigInt a, BigInt b) {
     // end FOR
 
     // remove padding zeros from answer
+
+    // if a or b is negative and first digit in the answer is 9
+        // set answer's negative to true
+        // take complement
     // return answer
 }
 
@@ -77,13 +97,3 @@ string BigInt::toString() {
 }
 
 BigInt::~BigInt() {}
-
-// PRIVATE
-
-void BigInt::push_front(char a) {
-
-}
-
-void BigInt::push_back(char a) {
-
-}
