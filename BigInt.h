@@ -31,8 +31,6 @@ class BigInt {
         void complement(BigInt&);
         void push_front(char);
         void push_back(char);
-        unsigned char peek_front(int offset = 0);
-        unsigned char peek_back(int offset = 0);
 
     public:
         BigInt();
