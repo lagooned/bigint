@@ -47,10 +47,14 @@ BigInt operator+(BigInt a, BigInt b) {
 
     // FOR length of answer max(a.length, b.length) + 1
         // convert chars to int via ascii offset (subtract '0')
-        // answerDigit = (a+b)%10;
+        // answerDigit = (a+b)%10 + carry;
+        // set carry to (a+b)/10;
         // convert answer back to ascii (add '0') and answer.push_front(answerDigit);
         // iterate both pointers backwards
     // end FOR
+
+    // remove padding zeros from answer
+    // return answer
 }
 
 string BigInt::toString() {
