@@ -6,14 +6,22 @@ using namespace std;
 
 void complement(BigInt& a) {
     // set placeholder node to tail
-    // carry = 1
-    // FOR the length of the number
-        // convert chars to int via ascii offset (subtract '0')
-        // newDigit = (9-digit+carry)%10
-        // set carry to newDigit/10
-        // convert newDigit to ascii (add '0') and set digit in placeholder
+    DigitNode *current = tail;
+
+    // add one first and carry
+    int carry = 1;
+
+    // for the length of the number
+    for(int i = 0; i < length; i++) {
+        // do math and convert to ascii char equivalents
+        int digit = current.digit - '0';
+        char newDigit = ((9-digit+carry) % 10) + '0';
+        carry = newDigit/10;
+        current.digit = newDigit;
+
         // iterate placeholder backwards
-    // end FOR
+        current = current.previous;
+    }
 }
 
 void BigInt::push_front(char a) { }
@@ -32,7 +40,6 @@ BigInt::BigInt(const BigInt& b) {
 }
 
 void BigInt::init(string digits) {
-
     int c = digits.find('-');
 
     // compute offset from front, to capture only digits
