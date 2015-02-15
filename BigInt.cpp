@@ -27,6 +27,7 @@ void BigInt::complement(BigInt& a) {
     }
 
     // remove buffer zero if needed
+    // TODO: IMPLEMENT THIS
 }
 
 /**
@@ -107,6 +108,8 @@ void BigInt::init(string digits) {
 }
 
 BigInt operator+(BigInt a, BigInt b) {
+    // TODO: IMPLEMENT THIS
+
     // check for negatives
     // complement the negative
     // add padding zeros until both lengths are max(a.length, b.length) + 2
@@ -150,4 +153,6 @@ string BigInt::toString() {
     return ss.str();
 }
 
-BigInt::~BigInt() {}
+BigInt::~BigInt() {
+    // TODO: IMPLEMENT THIS
+}
