@@ -10,10 +10,10 @@ class BigInt {
         class DigitNode {
             public:
                 unsigned char digit;
-                DigitNode *previous, *next;
+                DigitNode * previous, * next;
 
-                DigitNode(unsigned char digit, DigitNode *previous,
-                          DigitNode *next)
+                DigitNode(unsigned char digit, DigitNode * previous,
+                          DigitNode * next)
                 {
                     this->digit = digit;
                     this->previous = previous;
@@ -24,11 +24,12 @@ class BigInt {
                 bool hasPrev() { return !(previous == NULL); }
         };
 
-        DigitNode *head, *tail;
+        DigitNode * head, * tail;
         int length;
         bool negative;
 
         void complement(BigInt&);
+        char pop_front();
         void push_front(char);
         void push_back(char);
 

@@ -6,10 +6,13 @@ using namespace std;
 
 void BigInt::complement(BigInt& a) {
     // set placeholder node to tail
-    DigitNode *current = tail;
+    DigitNode * current = tail;
 
     // add one first and carry
     int carry = 1;
+
+    // push a 0 to take care of possible rollover
+    a.push_front('0');
 
     // for the length of the number
     for(int i = 0; i < length; i++) {
@@ -22,11 +25,57 @@ void BigInt::complement(BigInt& a) {
         // iterate placeholder backwards
         current = current->previous;
     }
+
+    // remove buffer zero if needed
 }
 
-void BigInt::push_front(char a) { }
+/**
+ * returns least significant digit and removes it
+ * @throws -1 if number is empty
+ */
+char BigInt::pop_front() {
+    char digit;
 
-void BigInt::push_back(char a) { }
+    if (head == NULL) {
+        throw -1;
+    } else {
+        // hold on to head
+        DigitNode * temp = head;
+
+        // get data
+        digit = head->digit;
+
+        // setup new head and tail
+        if (head->next != NULL) {
+            head->next->previous = NULL;
+            head = head->next;
+        }
+        else if (head->next == NULL) {
+            head = NULL;
+            tail = NULL;
+        }
+        // now references are correct, delete the old head
+        delete temp;
+
+        // decrement length
+        length--;
+    }
+    return digit;
+}
+
+void BigInt::push_front(char a) {
+    // new head has no previous
+    // next is the old head
+    head = new DigitNode(a, NULL, head);
+    length++;
+}
+
+void BigInt::push_back(char a) {
+    // new tail prev points is old tail
+    // next is null
+    tail = new DigitNode(a, tail, NULL);
+    length++;
+}
 
 BigInt::BigInt() {
     head = NULL;
@@ -49,9 +98,7 @@ void BigInt::init(string digits) {
         c = 0;
     }
 
-    // cut off ending spaces if needed
-    // replace with digits.length if needed
-    while (c < digits.find_last_not_of(' ')) {
+    while (c < digits.length()) {
         push_front(digits[c]);
         length++;
         c++;
@@ -89,7 +136,7 @@ string BigInt::toString() {
 
     // if not empty
     if (head!=NULL) {
-        DigitNode *current = head;
+        DigitNode * current = head;
 
         // add first element
         ss << current->digit;
