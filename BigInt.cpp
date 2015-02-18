@@ -40,21 +40,22 @@ char BigInt::pop_front() {
     if (head == NULL) {
         throw -1;
     } else {
-        // hold on to head
+        // hold onto head
         DigitNode * temp = head;
 
         // get data
         digit = head->digit;
 
         // setup new head and tail
-        if (head->next != NULL) {
+        if (head->hasNext()) {
             head->next->previous = NULL;
             head = head->next;
         }
-        else if (head->next == NULL) {
+        else {
             head = NULL;
             tail = NULL;
         }
+        
         // now references are correct, delete the old head
         delete temp;
 
@@ -68,6 +69,13 @@ void BigInt::push_front(char a) {
     // new head has no previous
     // next is the old head
     head = new DigitNode(a, NULL, head);
+
+    // if there is one node
+    // head and tail are the same
+    if (length <= 0) {
+        tail = head;
+    }
+
     length++;
 }
 
@@ -75,6 +83,13 @@ void BigInt::push_back(char a) {
     // new tail prev points is old tail
     // next is null
     tail = new DigitNode(a, tail, NULL);
+
+    // if there is one node
+    // tail and head are the same
+    if (length <= 0) {
+        head = tail;
+    }
+
     length++;
 }
 
@@ -90,19 +105,18 @@ BigInt::BigInt(const BigInt& b) {
 }
 
 void BigInt::init(string digits) {
-    int c = digits.find('-');
+    // find negative
+    int start = digits.find('-');
 
-    // compute offset from front, to capture only digits
-    if (c != string::npos) {
+    // if no negative
+    if (start > 0) {
         negative = true;
-    } else {
-        c = 0;
     }
 
-    while (c < digits.length()) {
-        push_front(digits[c]);
+    // from the start of the number to the end of the string
+    for (int i = start + 1; i < digits.length(); i++) {
+        push_back(digits[c]);
         length++;
-        c++;
     }
 
 }
