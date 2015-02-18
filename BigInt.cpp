@@ -55,7 +55,7 @@ char BigInt::pop_front() {
             head = NULL;
             tail = NULL;
         }
-        
+
         // now references are correct, delete the old head
         delete temp;
 
@@ -115,7 +115,7 @@ void BigInt::init(string digits) {
 
     // from the start of the number to the end of the string
     for (int i = start + 1; i < digits.length(); i++) {
-        push_back(digits[c]);
+        push_back(digits[i]);
         length++;
     }
 
