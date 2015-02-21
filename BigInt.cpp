@@ -37,7 +37,7 @@ void BigInt::complement(BigInt& a) {
 char BigInt::pop_front() {
     char digit;
 
-    if (head == NULL) {
+    if (head == NULL || length <= 0) {
         throw -1;
     } else {
         // hold onto head
@@ -70,10 +70,16 @@ void BigInt::push_front(char a) {
     // next is the old head
     head = new DigitNode(a, NULL, head);
 
-    // if there is one node
-    // head and tail are the same
+
     if (length <= 0) {
+        // if there is one node
+        // head and tail are the same
         tail = head;
+    } else {
+        // if there is more than one node
+        // setup the new node's next
+        // to be where the head is
+        head->next->previous = head;
     }
 
     length++;
@@ -84,10 +90,16 @@ void BigInt::push_back(char a) {
     // next is null
     tail = new DigitNode(a, tail, NULL);
 
-    // if there is one node
-    // tail and head are the same
+
     if (length <= 0) {
+        // if there is one node
+        // tail and head are the same
         head = tail;
+    } else {
+        // if there is more than one
+        // setup previous reference to
+        // newly created node
+        tail->previous->next = tail;
     }
 
     length++;
@@ -105,18 +117,22 @@ BigInt::BigInt(const BigInt& b) {
 }
 
 void BigInt::init(string digits) {
+
+    // TODO: clear out old number before adding a new one
+
     // find negative
     int start = digits.find('-');
 
     // if no negative
     if (start > 0) {
+        negative = false;
+    } else {
         negative = true;
     }
 
     // from the start of the number to the end of the string
-    for (int i = start + 1; i < digits.length(); i++) {
+    for (int i = start + 1; i <= digits.length(); i++) {
         push_back(digits[i]);
-        length++;
     }
 
 }
@@ -155,6 +171,10 @@ string BigInt::toString() {
     if (head!=NULL) {
         DigitNode * current = head;
 
+        if (negative) {
+            ss << "-";
+        }
+
         // add first element
         ss << current->digit;
 
@@ -168,5 +188,15 @@ string BigInt::toString() {
 }
 
 BigInt::~BigInt() {
-    // TODO: IMPLEMENT THIS
+    if (head != NULL) {
+        DigitNode* current = head;
+        DigitNode* last = NULL;
+
+        // clean up
+        while (current->hasNext()) {
+            last = current;
+            current = current->next;
+            delete last;
+        }
+    }
 }
