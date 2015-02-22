@@ -33,12 +33,14 @@ class BigInt {
         void push_front(char);
         void push_back(char);
         void clear();
+        void copy_from(const BigInt&);
 
     public:
         BigInt();
         BigInt(const BigInt&);
         void init(string);
         friend BigInt operator+(BigInt, BigInt);
+        BigInt& operator=(const BigInt&);
         string toString();
         ~BigInt();
 };

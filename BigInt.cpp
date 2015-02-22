@@ -4,7 +4,8 @@
 
 using namespace std;
 
-/**
+/*
+ * (private)
  * returns least significant digit and removes it
  * @throws -1 if number is empty
  */
@@ -38,11 +39,14 @@ char BigInt::pop_front() {
     return digit;
 }
 
+/*
+ * (private)
+ * add character a to the start of the list
+ */
 void BigInt::push_front(char a) {
     // new head has no previous
     // next is the old head
     head = new DigitNode(a, NULL, head);
-
 
     if (length <= 0) {
         // if there is one node
@@ -58,6 +62,10 @@ void BigInt::push_front(char a) {
     length++;
 }
 
+/*
+ * (private)
+ * add character a to the end of the list
+ */
 void BigInt::push_back(char a) {
     // new tail prev points is old tail
     // next is null
@@ -78,10 +86,14 @@ void BigInt::push_back(char a) {
     length++;
 }
 
+/*
+ * (private)
+ * free memory and reset member vars
+ */
 void BigInt::clear() {
     if (head != NULL) {
-        DigitNode* current = head;
-        DigitNode* last = NULL;
+        DigitNode * current = head;
+        DigitNode * last = NULL;
 
         // clean up
         while (current->hasNext()) {
@@ -98,6 +110,9 @@ void BigInt::clear() {
     length = 0;
 }
 
+/**
+ * default constructor
+ */
 BigInt::BigInt() {
     head = NULL;
     tail = NULL;
@@ -105,11 +120,63 @@ BigInt::BigInt() {
     length = 0;
 }
 
+/**
+ * copy constructor
+ */
 BigInt::BigInt(const BigInt& b) {
-    // TODO: copy constructor
-    // needed for operator+
+    copy_from(b);
 }
 
+/**
+ * equals operator
+ */
+BigInt& BigInt::operator=(const BigInt& b) {
+    copy_from(b);
+    return *this;
+}
+
+/*
+ * (private)
+ * used to implement same functionality in both
+ * copy constructor and equals operator
+ */
+void BigInt::copy_from(const BigInt& b) {
+    // set negative
+    negative = b.negative;
+
+    // init length
+    length = 0;
+
+    // if b has digits
+    if (b.head != NULL) {
+
+        // set placeholder
+        DigitNode * current = b.head;
+
+        // push first one
+        push_back(current->digit);
+
+        // while there is a next digit
+        while (current->hasNext()) {
+
+            // iterate placeholder
+            current = current->next;
+
+            // push said digit
+            push_back(current->digit);
+        }
+    }
+
+    // there are no digits
+    else {
+        head = NULL;
+        tail = NULL;
+    }
+}
+
+/**
+ * clear out old number and add new digits
+ */
 void BigInt::init(string digits) {
 
     // TODO: clear out old number before adding a new one
@@ -161,9 +228,9 @@ BigInt operator+(BigInt a, BigInt b) {
     // return answer
 }
 
-/**
- * Destructive complement - used by addition
- * algorithm
+/*
+ * (private)
+ * destructive complement - used by addition algorithm
  */
 void BigInt::complement(BigInt& a) {
     // set placeholder node to tail
@@ -193,6 +260,9 @@ void BigInt::complement(BigInt& a) {
     }
 }
 
+/**
+ * @returns string reprisenting BigInt
+ */
 string BigInt::toString() {
     stringstream ss;
 
@@ -216,6 +286,9 @@ string BigInt::toString() {
     return ss.str();
 }
 
+/**
+ * destructer
+ */
 BigInt::~BigInt() {
     clear();
 }
