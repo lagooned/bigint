@@ -4,32 +4,6 @@
 
 using namespace std;
 
-void BigInt::complement(BigInt& a) {
-    // set placeholder node to tail
-    DigitNode * current = tail;
-
-    // add one first and carry
-    int carry = 1;
-
-    // push a 0 to take care of possible rollover
-    a.push_front('0');
-
-    // for the length of the number
-    for(int i = 0; i < length; i++) {
-        // do math and convert to ascii char equivalents
-        int digit = current->digit - '0';
-        char newDigit = ((9-digit+carry) % 10) + '0';
-        carry = newDigit/10;
-        current->digit = newDigit;
-
-        // iterate placeholder backwards
-        current = current->previous;
-    }
-
-    // remove buffer zero if needed
-    // TODO: IMPLEMENT THIS
-}
-
 /**
  * returns least significant digit and removes it
  * @throws -1 if number is empty
@@ -50,8 +24,7 @@ char BigInt::pop_front() {
         if (head->hasNext()) {
             head->next->previous = NULL;
             head = head->next;
-        }
-        else {
+        } else {
             head = NULL;
             tail = NULL;
         }
@@ -105,6 +78,26 @@ void BigInt::push_back(char a) {
     length++;
 }
 
+void BigInt::clear() {
+    if (head != NULL) {
+        DigitNode* current = head;
+        DigitNode* last = NULL;
+
+        // clean up
+        while (current->hasNext()) {
+            last = current;
+            current = current->next;
+            delete last;
+        }
+    }
+
+    // reset all values
+    head = NULL;
+    tail = NULL;
+    negative = false;
+    length = 0;
+}
+
 BigInt::BigInt() {
     head = NULL;
     tail = NULL;
@@ -113,20 +106,23 @@ BigInt::BigInt() {
 }
 
 BigInt::BigInt(const BigInt& b) {
-    // copy constructor
+    // TODO: copy constructor
+    // needed for operator+
 }
 
 void BigInt::init(string digits) {
 
     // TODO: clear out old number before adding a new one
+    clear();
 
     // find negative
     int start = digits.find('-');
 
-    // if no negative
-    if (start > 0) {
-        negative = false;
-    } else {
+    // if pos of new start is greater
+    // than negative 1
+    if (start > -1) {
+        // there is a negative sign
+        // in a valid spot in the number
         negative = true;
     }
 
@@ -142,8 +138,9 @@ BigInt operator+(BigInt a, BigInt b) {
 
     // check for negatives
     // complement the negative
+
     // add padding zeros until both lengths are max(a.length, b.length) + 2
-    // create placeholder variable for answer
+    // create placeholder BigInt for answer
 
     // set carry to 0
     // set two pointers to tails for iteration
@@ -162,6 +159,38 @@ BigInt operator+(BigInt a, BigInt b) {
         // set answer's negative to true
         // take complement
     // return answer
+}
+
+/**
+ * Destructive complement - used by addition
+ * algorithm
+ */
+void BigInt::complement(BigInt& a) {
+    // set placeholder node to tail
+    DigitNode * current = a.tail;
+
+    // push a 0 to take care of possible rollover
+    a.push_front('0');
+
+    // add one first and carry
+    int carry = 1;
+
+    // for the length of the number
+    for(int i = 0; i < a.length; i++) {
+        // do math and convert to ascii char equivalents
+        int digit = current->digit - '0';
+        char newDigit = ((9-digit+carry) % 10) + '0';
+        carry = newDigit/10;
+        current->digit = newDigit;
+
+        // iterate placeholder backwards
+        current = current->previous;
+    }
+
+    // remove buffer zeros if needed
+    while (a.head->digit == '0') {
+        pop_front();
+    }
 }
 
 string BigInt::toString() {
@@ -188,15 +217,5 @@ string BigInt::toString() {
 }
 
 BigInt::~BigInt() {
-    if (head != NULL) {
-        DigitNode* current = head;
-        DigitNode* last = NULL;
-
-        // clean up
-        while (current->hasNext()) {
-            last = current;
-            current = current->next;
-            delete last;
-        }
-    }
+    clear();
 }

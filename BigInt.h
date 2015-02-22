@@ -32,6 +32,7 @@ class BigInt {
         char pop_front();
         void push_front(char);
         void push_back(char);
+        void clear();
 
     public:
         BigInt();
