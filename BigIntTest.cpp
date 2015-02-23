@@ -27,12 +27,10 @@ int main(int argc, char *argv[])
         a.init(operand1[i]);
         b.init(operand2[i]);
 
-        cout << a.toString() << " + " << b.toString() << endl;
-        cout << "--------------------------------------";
         result = a + b;
-        cout << result.toString() << endl << endl;
 
-        //    << result.toString() << endl;
+        cout << a.toString() << " + " << b.toString();
+        cout << " = " << result.toString() << endl;
     }
 
     return 0;

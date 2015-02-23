@@ -9,7 +9,7 @@ using namespace std;
 /*
  * (private)
  * returns least significant digit and removes it
- * @throws -1 if number is empty
+ * @throws -1 if number has no digits
  */
 char BigInt::pop_front() {
     char digit;
@@ -46,9 +46,11 @@ char BigInt::pop_front() {
  * pop extra buffer zeros
  */
 void BigInt::pop_zeros() {
+
     while (head->digit == '0') {
         pop_front();
     }
+
 }
 
 /*
@@ -61,10 +63,13 @@ void BigInt::push_front(char a) {
     head = new DigitNode(a, NULL, head);
 
     if (length <= 0) {
+
         // if there is one node
         // head and tail are the same
         tail = head;
+
     } else {
+
         // if there is more than one node
         // setup the new node's next
         // to be where the head is
@@ -118,8 +123,11 @@ BigInt::BigInt(const BigInt& b) {
  * equals operator
  */
 BigInt& BigInt::operator=(const BigInt& b) {
+    // clear out old number
     clear();
+    // copy from argument
     copy_from(b);
+    // dereferenced pointer to this for stringed assignment statements
     return *this;
 }
 
@@ -173,8 +181,7 @@ void BigInt::init(string digits) {
     // find negative
     int start = digits.find('-');
 
-    // if pos of new start is greater
-    // than negative 1
+    // if pos of new start is valid
     if (start > -1) {
         // there is a negative sign
         // in a valid spot in the number
@@ -207,13 +214,9 @@ BigInt BigInt::operator+(BigInt b) {
         while (a.length < newLength) { a.push_front('0'); }
         while (b.length < newLength) { b.push_front('0'); }
 
-        cout << endl << "After buffer zeros: " << a.toString() << " + " << b.toString() << endl;
-
         // check for negatives and complement
         if (a.negative) { complement(a); }
         if (b.negative) { complement(b); }
-
-        cout << "After Complement: " << a.toString() << " + " << b.toString() << endl;
 
         // set carry to 0
         int carry = 0;
@@ -222,8 +225,6 @@ BigInt BigInt::operator+(BigInt b) {
         DigitNode * a_current = a.tail;
         DigitNode * b_current = b.tail;
 
-
-        // // FOR length of answer newLength
         while (a_current != NULL) {
              // convert chars to int via ascii offset (subtract '0')
              int a = a_current->digit - '0';
@@ -235,9 +236,7 @@ BigInt BigInt::operator+(BigInt b) {
              // set carry
              carry = (a + b + carry)/10;
 
-             cout << "a: " << a << " b: " << b << " digit: " << answerDigit << " carry: " << carry << endl;
-
-             // convert answer back to ascii (add '0') and answer.push_front(answerDigit);
+             // convert answer back to ascii (add '0') and push digit
              answer.push_front(answerDigit + '0');
 
              // iterate both pointers backwards
@@ -253,6 +252,9 @@ BigInt BigInt::operator+(BigInt b) {
             complement(answer);
         }
 
+        // remove buffer zeros
+        answer.pop_zeros();
+
         return answer;
     }
 }
@@ -266,9 +268,6 @@ void BigInt::complement(BigInt& a) {
     // set placeholder node to tail
     DigitNode * current = a.tail;
 
-    // push a 0 to take care of possible rollover
-    // a.push_front('0');
-
     // add one first and carry
     int carry = 1;
 
@@ -277,12 +276,16 @@ void BigInt::complement(BigInt& a) {
         // do math and convert to ascii char equivalents
         int digit = current->digit - '0';
 
+        // calculate using precarry of 1
         int calcPlusOne = 9-digit+carry;
 
+        // calc new digit
         int newDigit = (calcPlusOne % 10);
 
+        // calc new carry
         carry = (calcPlusOne)/10;
 
+        // convert from int to char
         current->digit = newDigit + '0';
 
         // iterate placeholder backwards
@@ -341,7 +344,7 @@ void BigInt::clear() {
 }
 
 /**
- * destructer
+ * destructor
  */
 BigInt::~BigInt() {
     clear();
