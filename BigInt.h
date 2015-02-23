@@ -34,12 +34,13 @@ class BigInt {
         void push_back(char);
         void clear();
         void copy_from(const BigInt&);
+        void pop_zeros();
 
     public:
         BigInt();
         BigInt(const BigInt&);
         void init(string);
-        friend BigInt operator+(BigInt, BigInt);
+        BigInt operator+(BigInt);
         BigInt& operator=(const BigInt&);
         string toString();
         ~BigInt();

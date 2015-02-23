@@ -21,13 +21,19 @@ int main(int argc, char *argv[])
                            "-617018112091", "76541329276", "-76541329276",
                            "76541329276", "-76541329276" };
 
+
     for (int i = 0; i < 16; i++)
     {
         a.init(operand1[i]);
         b.init(operand2[i]);
-        result = a + b;
-        cout << a.toString() << " + " << b.toString() << " = "
-            << result.toString() << endl;
 
+        cout << a.toString() << " + " << b.toString() << endl;
+        cout << "--------------------------------------";
+        result = a + b;
+        cout << result.toString() << endl << endl;
+
+        //    << result.toString() << endl;
     }
+
+    return 0;
 }
