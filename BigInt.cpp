@@ -1,5 +1,4 @@
 #include "BigInt.h"
-#include <iostream>
 #include <string>
 #include <sstream>
 #include <algorithm>
@@ -46,11 +45,9 @@ char BigInt::pop_front() {
  * pop extra buffer zeros
  */
 void BigInt::pop_zeros() {
-
-    while (head->digit == '0') {
+    while (head->digit == '0' && length > 1) {
         pop_front();
     }
-
 }
 
 /*
@@ -315,6 +312,8 @@ string BigInt::toString() {
             current = current->next;
             ss << current->digit;
         }
+    } else {
+        ss << '0';
     }
     return ss.str();
 }
