@@ -1,0 +1,10 @@
+Hi! Thanks for looking at my program. A few things to note:
+
++ I renamed BigIntegerTest.cpp -> BigIntTest.cpp to be slightly more consistent
+    with naming.
++ Just running 'make' from bash should compile everything needed, however if it
+    doesn't, running 'make BigIntTest' and 'make MyTest' separately should also
+    work.
+
+Thanks. :D
+Jared Engler
