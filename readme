@@ -1,10 +1,4 @@
-Hi! Thanks for looking at my program. A few things to note:
+Big Integer
+===========
 
-+ I renamed BigIntegerTest.cpp -> BigIntTest.cpp to be slightly more consistent
-    with naming.
-+ Just running 'make' from bash should compile everything needed, however if it
-    doesn't, running 'make BigIntTest' and 'make MyTest' separately should also
-    work.
-
-Thanks. :D
-Jared Engler
+Creates a hash table of dates => names using a custom weighted hash algorithm, along with quadratic probing for resolving names in the hash. The hash also resizes itself once the hash is 45% full. 
