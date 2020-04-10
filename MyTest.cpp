@@ -7,6 +7,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
+
     BigInt a, b, x, y;
 
     // accepts zero case w/o seg fault
@@ -39,4 +40,5 @@ int main(int argc, char *argv[]) {
     cout << x.toString() << endl;
 
     return 0;
+
 }
