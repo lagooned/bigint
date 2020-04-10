@@ -1,0 +1,4 @@
+/BigInt.h.gch
+*.o
+/BigIntTest
+/MyTest
