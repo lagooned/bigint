@@ -1,3 +1,4 @@
+
 #include "BigInt.h"
 #include <string>
 #include <sstream>
@@ -11,11 +12,17 @@ using namespace std;
  * @throws -1 if number has no digits
  */
 char BigInt::pop_front() {
+
     char digit;
 
     if (head == NULL || length <= 0) {
+
         throw -1;
-    } else {
+
+    }
+
+    else {
+
         // hold onto head
         DigitNode * temp = head;
 
@@ -24,11 +31,17 @@ char BigInt::pop_front() {
 
         // setup new head and tail
         if (head->hasNext()) {
+
             head->next->previous = NULL;
             head = head->next;
-        } else {
+
+        }
+
+        else {
+
             head = NULL;
             tail = NULL;
+
         }
 
         // now references are correct, delete the old head
@@ -36,7 +49,9 @@ char BigInt::pop_front() {
 
         // decrement length
         length--;
+
     }
+
     return digit;
 }
 
@@ -45,9 +60,13 @@ char BigInt::pop_front() {
  * pop extra buffer zeros
  */
 void BigInt::pop_zeros() {
+
     while (head->digit == '0' && length > 1) {
+
         pop_front();
+
     }
+
 }
 
 /*
@@ -81,19 +100,26 @@ void BigInt::push_front(char a) {
  * add character a to the end of the list
  */
 void BigInt::push_back(char a) {
+
     // new tail prev points is old tail
     // next is null
     tail = new DigitNode(a, tail, NULL);
 
     if (length <= 0) {
+
         // if there is one node
         // tail and head are the same
         head = tail;
-    } else {
+
+    }
+
+    else {
+
         // if there is more than one
         // setup previous reference to
         // newly created node
         tail->previous->next = tail;
+
     }
 
     length++;
@@ -103,29 +129,37 @@ void BigInt::push_back(char a) {
  * default constructor
  */
 BigInt::BigInt() {
+
     head = NULL;
     tail = NULL;
     negative = false;
     length = 0;
+
 }
 
 /**
  * copy constructor
  */
 BigInt::BigInt(const BigInt& b) {
+
     copy_from(b);
+
 }
 
 /**
  * equals operator
  */
 BigInt& BigInt::operator=(const BigInt& b) {
+
     // clear out old number
     clear();
+
     // copy from argument
     copy_from(b);
+
     // dereferenced pointer to this for stringed assignment statements
     return *this;
+
 }
 
 /*
@@ -134,6 +168,7 @@ BigInt& BigInt::operator=(const BigInt& b) {
  * copy constructor and equals operator
  */
 void BigInt::copy_from(const BigInt& b) {
+
     // set negative
     negative = b.negative;
 
@@ -165,6 +200,7 @@ void BigInt::copy_from(const BigInt& b) {
         head = NULL;
         tail = NULL;
     }
+
 }
 
 /**
@@ -180,15 +216,20 @@ void BigInt::init(string digits) {
 
     // if pos of new start is valid
     if (start > -1) {
+
         // there is a negative sign
         // in a valid spot in the number
         negative = true;
+
     }
 
     // from the start of the number to the end of the string
     for (int i = start + 1; i <= digits.length() - 1; i++) {
+
         push_back(digits[i]);
+
     }
+
 }
 
 /**
@@ -197,11 +238,15 @@ void BigInt::init(string digits) {
  * @throws -1 if invalid operands
  */
 BigInt BigInt::operator+(BigInt b) {
+
     BigInt a = *this;
 
     if (a.head == NULL || b.head == NULL) {
+
         throw -1;
+
     } else {
+
         // create placeholder BigInt for answer
         BigInt answer;
 
@@ -223,30 +268,35 @@ BigInt BigInt::operator+(BigInt b) {
         DigitNode * b_current = b.tail;
 
         while (a_current != NULL) {
-             // convert chars to int via ascii offset (subtract '0')
-             int a = a_current->digit - '0';
-             int b = b_current->digit - '0';
 
-             // compute digit
-             int answerDigit = (a + b + carry) % 10;
+			// convert chars to int via ascii offset (subtract '0')
+			int a = a_current->digit - '0';
+			int b = b_current->digit - '0';
 
-             // set carry
-             carry = (a + b + carry)/10;
+			// compute digit
+			int answerDigit = (a + b + carry) % 10;
 
-             // convert answer back to ascii (add '0') and push digit
-             answer.push_front(answerDigit + '0');
+			// set carry
+			carry = (a + b + carry)/10;
 
-             // iterate both pointers backwards
-             a_current = a_current->previous;
-             b_current = b_current->previous;
+			// convert answer back to ascii (add '0') and push digit
+			answer.push_front(answerDigit + '0');
+
+			// iterate both pointers backwards
+			a_current = a_current->previous;
+			b_current = b_current->previous;
+
         }
 
-        //if first digit in the answer is 9
+        // if first digit in the answer is 9
         if (answer.head->digit == '9') {
+
             // set answer's negative to true
             answer.negative = true;
+
             // take complement
             complement(answer);
+
         }
 
         // remove buffer zeros
@@ -270,6 +320,7 @@ void BigInt::complement(BigInt& a) {
 
     // for the length of the number
     while(current != NULL) {
+
         // do math and convert to ascii char equivalents
         int digit = current->digit - '0';
 
@@ -287,17 +338,21 @@ void BigInt::complement(BigInt& a) {
 
         // iterate placeholder backwards
         current = current->previous;
+
     }
+
 }
 
 /**
  * @returns string reprisenting BigInt
  */
 string BigInt::toString() {
+
     stringstream ss;
 
     // if not empty
     if (head != NULL) {
+
         DigitNode * current = head;
 
         if (negative) {
@@ -312,9 +367,15 @@ string BigInt::toString() {
             current = current->next;
             ss << current->digit;
         }
-    } else {
-        ss << '0';
+
     }
+
+    else {
+
+        ss << '0';
+
+    }
+
     return ss.str();
 }
 
@@ -323,7 +384,9 @@ string BigInt::toString() {
  * free memory and reset member vars
  */
 void BigInt::clear() {
+
     if (head != NULL) {
+
         DigitNode * current = head;
         DigitNode * last = NULL;
 
@@ -333,6 +396,7 @@ void BigInt::clear() {
             current = current->next;
             delete last;
         }
+
     }
 
     // reset all values
@@ -340,11 +404,14 @@ void BigInt::clear() {
     tail = NULL;
     negative = false;
     length = 0;
+
 }
 
 /**
  * destructor
  */
 BigInt::~BigInt() {
+
     clear();
+
 }
